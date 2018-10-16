@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+
+{% block title %}Фотогалерея{% endblock %}
+{% block description %}{% endblock %}
+
+{% block content %}
+    {% for roots in root %}
+    {% if forloop.first %}
+        <h2>Фотогалерея</h2>
+    {% endif %}
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 album">
+        	<a href="/gallery/album-{{roots.id}}.html" title="{{roots.name}}">
+          		<img class="photo_prev" src="{{roots.image.url}}" />
+          		<h3>{{roots.name}}</h3>
+          </a>
+        </div>
+  {% endfor %} 
+{% endblock %} 

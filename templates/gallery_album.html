@@ -1,0 +1,52 @@
+{% extends 'index.html' %}
+
+{% block title %}{% if album %}{% for alb in album %}{{alb.root.name}}{% endfor %}{% else %}Пустая категория галереи{% endif %}{% endblock %}
+{% block description %}{% if album %}{% for alb in album %}{{alb.root.name}}{% endfor %}{% else %}В этой категории пока нет изображений, приносим свои извинения.{% endif %}{% endblock %}
+
+
+{% block content %}
+    {% for alb in album %}
+    {% if forloop.first %}
+    	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 breadcrumbs" align="center">
+    	<a href="/gallery">Галерея</a>
+    	<span class="glyphicon glyphicon-arrow-right"></span>
+    	<yellow>{{alb.root.name}}</yellow>
+    	</div>
+    {% endif %}
+        <div class="col-md-3 col-sm-12 col-xs-12 album">
+            <a href="/gallery/album-{{alb.root.id}}/photo-{{alb.id}}.html" title="{{alb.name}}">
+            	<div class="photo_prev" style="background-image: url({{alb.image.url}});">
+            </div>
+                <h3>{{alb.name}}</h3>
+            </a>
+        </div>
+{% endfor %} 
+{% for alb in album %}
+    {% if forloop.first %}
+    {% if album.number %} 
+<!-- Условие для отображения пагинатора. Если более 1 страницы. --> 
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
+            <ul class="pagination">
+                {% if album.has_previous %}
+                    <li class="arrow"><a href="/gallery/album-{{alb.root_id}}.html?page={{ pag }}{{ album.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                    <li class="disabled"><a href="">&laquo;</a></li>
+                {% endif %}
+                {% for pag in album.paginator.page_range %}
+                    {% if pag == album.number %}
+                        <li class="active"><a href="/gallery/album-{{alb.iroot_id}}.html?page={{ pag }}">{{ pag }}</a></li>
+                    {% else %}
+                        <li><a href="/gallery/album-{{alb.root_id}}.html?page={{ pag }}">{{ pag }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if album.has_next %}
+                    <li class="arrow"><a href="/gallery/album-{{alb.iroot_id}}.html?page={{ pag }}{{ album.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                    <li class="disabled"><a href="">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+	{% endif %}
+    {% endif %}
+{% endfor %} 
+{% endblock %} 
